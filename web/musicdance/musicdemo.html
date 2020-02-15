@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="HTML5的音频频谱仪">
+    <title>HTML5音频API展示</title>
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            font-family: arial, "Microsoft YaHei";
+            background-color: #272822;
+            color: #FEFEFE;
+        }
+        #fileWrapper {
+            transition: all 0.5s ease;
+        }
+        #fileWrapper:hover {
+            opacity: 1 !important;
+        }
+        #visualizer_wrapper {
+            text-align: center;
+        }
+        footer {
+            position: fixed;
+            bottom: 2px;
+            color: #aaa;
+        }
+        li.select{background:#f00}
+        li{cursor: pointer;}
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="fileWrapper" class="file_wrapper">
+            <div id="info">
+                HTML5音频音频API
+            </div>
+            <label for="uploadedFile">上传mp3文件播放:</label>
+            <input type="file" id="AudioDanceUploadedFile"></input>
+            <ul id="playlist">
+                <li class="select" data-src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview60/v4/6c/d4/36/6cd43673-da5b-bf49-e427-818fffa54f9d/mzaf_3818474917026294933.plus.aac.p.m4a">告白氣球</li>
+                <li data-src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview118/v4/70/58/47/7058478b-2072-6860-160a-2e16cfdb7143/mzaf_3581223067005855092.plus.aac.p.m4a">I Did Something Bad</li>
+                <li data-src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview128/v4/ef/e5/7a/efe57af8-66da-19b5-ca61-04a67d2ac1f2/mzaf_2454739782821649947.plus.aac.p.m4a">I Don't Wanna Live Forever (Fifty Shades Darker)</li>
+            </ul>
+            <button type="button" name="Prev" id='prev' onclick="player.prev()"> Prev </button>
+            <button type="button" name="Start" id='start' onclick="player.start()"> Start </button>
+            <button type="button" name="Pause" id='pause' onclick="player.suspend()"> Pause </button>
+            <button type="button" name="Play" id='play' onclick="player.resume()"> Play </button>
+            <button type="button" name="Next" id='next' onclick="player.next()"> Next </button>
+        </div>
+        <div id="visualizer_wrapper">
+            <canvas id='AudioDanceCanvas' width="340" height="175"></canvas>
+        </div>
+    </div>
+    <script type="text/javascript" src="dance.js"></script>
+    <script type="text/javascript">
+        var player = null;
+        window.onload = function() {
+            player = new WebPlayer();
+            player.init();
+        };
+    </script>
+
+</body>
+
+</html>
