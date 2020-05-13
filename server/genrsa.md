@@ -21,3 +21,10 @@
 > head -c 6 /dev/urandom | sha1sum | cut -c 1-12
 > uuidgen |tr -d '-' 32  
 > openssl md5/sha1
+
+### Github/Gitlab配置ssh
+#### ssh-keygen
+> ssh-keygen -t rsa -C "example@example.com"  
+> 生成两个文件`~/.ssh/id_rsa`  `~.ssh/id_rsa.pub`  
+> 复制`~.ssh/id_rsa.pub`内容, 配置`ssh key`  
+>
