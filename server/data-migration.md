@@ -1,29 +1,31 @@
 
 ### 数据备份
 > MySQL  
->> mysqldump -uroot -p tabio > mysql/instabio.sql  
+>> mysqldump -uroot -p dbbase > mysql/dbbase.sql  
 >>
 > MongoDB  
->>  mongodump.exe --host="127.0.0.1:27017" --username="server" --password="82d501a6b81f" --authenticationDatabase="admin"  --db="biolink" --out="E:\\Bakup\\mongo\\" 
+>>  mongodump.exe --host="127.0.0.1:27017" --username="server" --password="xxxx" --authenticationDatabase="admin"  --db="biolink" --out="E:\\Bakup\\mongo\\" 
 ### 数据备份 - 迁移
 > MySQL  
->> mysqldump -uroot -p tabio > mysql/instabio.sql  
->> mysqldump -uroot -p tabio | gzip > tabio.200614.sql.gz  
->> Hk!mc2yO5Cp8  
+>> mysqldump -uroot -p dbbase > mysql/dbbase.sql  
+>> mysqldump -uroot -p dbbase | gzip > dbbase.200614.sql.gz  
+>> xxxx  
 >>
 >> gunzip backup.sql.gz
 >>
 >> mysqldump --host=$src_host --port=$src_port -u$src_user -p$src_password $src_database --tables $src_table | mysql --host=$dst_host --port=$dst_port -u$dst_user -p$dst_password $dst_database
 >>
->> gunzip < tabio.200614.sql.gz | mysql -hec2-18-222-46-158.us-east-2.compute.amazonaws.com -uroot -p tabio
->> PMC,XQR8ipr4 
+>> gunzip < dbbase.200614.sql.gz | mysql -h127.0.0.1 -uroot -p dbbase
+>> xxxx 
 >
 >
 > MongoDB  
->>  mongodump.exe --host="127.0.0.1:27017" --username="server" --password="82d501a6b81f" --authenticationDatabase="admin"  --db="biolink" --out="E:\\Bakup\\mongo\\" 
+>>  mongodump.exe --host="127.0.0.1:27017" --username="server" --password="xxxxxx" --authenticationDatabase="admin"  --db="biolink" --out="E:\\Bakup\\mongo\\" 
 >>
->> mongorestore --host="ec2-18-222-46-158.us-east-2.compute.amazonaws.com:27017" --username="server" --password="82d501a6b81f" --authenticationDatabase="admin" E:\\Bakup\\mongo\\
+>> mongorestore --host="127.0.0.1:27017" --username="server" --password="xxxxxx" --authenticationDatabase="admin" E:\\Bakup\\mongo\\
 >
+#### 阿里云DTS
+> 使用增量备份, 实现不停机迁移
 >
 #### 查看服务器状态
 > show status like "%connections%";  
