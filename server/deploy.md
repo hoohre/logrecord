@@ -56,8 +56,9 @@
 >>> 不想用那么复杂的密码，可以修改默认策略, `/etc/my.cnf`添加`validate_password=OFF`,保存并重启MySQL  
 >>> GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;  
 >>> FLUSH PRIVILEGES;  
->>> `vim /etc/my.cnf`
-
+>>> `vim /etc/my.cnf`   
+>> 修改数据路径需要重新创建数据库  
+>>> `sudo mysqld --user=mysql --datadir=/mnt/efs/fs1/log/mysql`
 ```
 sql_mode = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"  
 
@@ -65,6 +66,16 @@ character-set-client-handshake = FALSE
 character-set-server = utf8mb4
 collation-server = utf8mb4_general_ci
 init_connect="SET NAMES utf8mb4"
+
+max_connections = 1000
+
+# bin log 可选
+log_bin=mysql_bin
+binlog_format=row
+# server_id > 1
+server_id=6543
+# MySQL >=5.6 需要配置
+binlog_row_image=full
 
 #[slow_query]
 slow_query_log = 1
