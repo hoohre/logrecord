@@ -97,7 +97,7 @@ use admin;
 db.createUser(
   {
     user: "server",
-    pwd: "82d501a6b81f",
+    pwd: "xxxxxx",
     roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
   }
 );
