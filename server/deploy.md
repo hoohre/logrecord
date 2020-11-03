@@ -108,3 +108,92 @@ default-character-set = utf8mb4
 >>
 > pip install uwsgi  
 >
+#### monit监控mongodb
+> https://mmonit.com/wiki/Monit/Systemd  
+> https://mmonit.com/wiki/Monit/Installation  
+> yum install monit  
+>> 如何配置  
+>> 使用yum安装默认配置文件在：  
+>> /etc/monitrc # 全局参数配置文件  
+>> /etc/monit.d/ # 在这个目录下新增每个待监控服务的配置  
+>>
+>> 编辑全局参数配置文件/etc/monitrc，我的配置如下  
+>> vim /etc/monitrc  
+```
+#设置周期，每60秒自动检测一次 
+set daemon 30   
+#设置报警邮件发送格式 
+set mailserver smtp.163.com port 25 USERNAME "xxxxx@163.com" PASSWORD "xxxxxx" 
+set mail-format {           
+	from: xxxx@163.com           
+	subject: monit alert --  $EVENT $SERVICE           
+	message: $EVENT Service $SERVICE                 
+		Date:        $DATE                 
+		Action:      $ACTION                 
+		Host:        $HOST                 
+		Description: $DESCRIPTION    
+}   
+#设置报警邮件发给谁，默认只会发送一次报警。 #with reminder on 3 cycles表示如果服务一直处于失败，则基于周期最多发送3次报警 
+set alert xxxy@qq.com with reminder on 3 cycles   
+# Monit Web界面相关的访问配置，如不使用则不需要配置(web管理界面需要额外的M/Monit项目) 
+set httpd port 2812      allow app:app 
+set eventqueue basedir /var/monit slots 1000   
+#包含所有需要监控服务的子配置项，这里使用了文件名通配符 
+include /etc/monit.d/*.monitrc.conf
+
+```
+> 监控mongodb配置示例（利用端口监控）
+>>
+```
+#匹配进程名 
+CHECK PROCESS mongo MATCHING mongo 
+#配置服务启动和重启命令 
+start program = "/usr/bin/sudo service mongodb start" 
+restart program = "/usr/bin/sudo service mongodb restart" 
+#如果端口27017无法访问则认为服务失败，发报警邮件并重启服务 
+if failed port 27017  type tcp then alert if failed port 27017  type tcp then restart 
+#如果在三个周期内重启了3次，则不再监控 
+if 3 restarts within 3 cycles then unmonitor
+```
+
+> monit相关命令
+```
+ monit # 启动monit daemon
+ monit reload # 当更新了配置文件需要重载
+ monit status # 查看所有服务状态
+ monit status nginx # 查看nginx服务状态
+ monit stop all # 停止所有服务
+ monit stop mongo # 停止mongo服务
+ monit start all # 启动所有服务
+ monit start mongo # 启动mongo服务
+```
+#### 修复系统盘
+> https://aws.amazon.com/premiumsupport/knowledge-center/ec2-sudoers-syntax-errors-sudo/  
+> https://serverfault.com/questions/948408/mount-wrong-fs-type-bad-option-bad-superblock-on-dev-xvdf1-missing-codepage
+```
+If the instances were launched using the same AMI then their root volumes will have been created from the same EBS snapshot, so the problem is likely duplicate XFS UUIDs. The error message from mount isn't very helpful, but you may see errors like this in /var/log/messages or equivalent:
+
+Jan 13 23:30:29 ip-172-31-15-234 kernel: XFS (nvme1n1): Filesystem has duplicate UUID 56282b3b-c1f3-425e-90db-e9e26def629d - can't mount
+(This example is from a t3 instance using NVMe storage, but it's not NVMe-specific.)
+
+Every XFS filesystem has a (supposedly) unique ID stored on-disk, which protects you from accidentally mounting the same filesystem multiple times. Because the EBS snapshot/restore process is a block-level copy, any volumes you create from a snapshot will have the same UUID as the source volume so you can only mount one at a time.
+
+You can view the UUID for a volume by attaching it but not mounting it, then running xfs_db to examine the attached disk:
+
+# xfs_db -c uuid /dev/nvme1n1
+UUID = 56282b3b-c1f3-425e-90db-e9e26def629d
+(EDIT: The blkid command will also show you the UUID, even if the device is mounted.)
+
+To work around the issue, you can either use the XFS-specific nouuid mount option to temporarily ignore the duplicate check, e.g.
+
+# mount -t xfs -o nouuid /dev/nvme1n1 /mnt
+or you can use xfs_admin to permanently change the UUID on the volume:
+
+# xfs_admin -U generate /dev/nvme1n1
+Clearing log and setting UUID
+writing all SBs
+new UUID = 1eb81512-3f22-4b79-9a35-f22f29745c60
+
+sudo mount -t xfs -o nouuid /dev/xvdf1 /mnt
+
+```
