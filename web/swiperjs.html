@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <title>SwiperJS Demos</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css">
+    <style type="text/css" media="screen">
+    .swiper-container {
+        width: 100%;
+        max-width: 600px;
+        height: 300px;
+    }
+
+    html,
+    body {
+        height: 100%;
+        font-family: "微软雅黑";
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    a {
+        color: #428bca;
+        text-decoration: none;
+    }
+
+    a:hover,
+    a:focus {
+        color: #2a6496;
+        text-decoration: underline;
+    }
+
+    a:focus {
+        outline: thin dotted;
+        outline: 5px auto -webkit-focus-ring-color;
+        outline-offset: -2px;
+    }
+
+    .padd_40 {
+        padding-top: 80px;
+        background: #F5F5F5;
+    }
+
+    .a {
+        text-align: center;
+        line-height: 40px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 10;
+        border-bottom: 1px #ccc solid;
+        background: #f50;
+        color: #fff;
+    }
+
+    .tab {
+        display: flex;
+        line-height: 40px;
+        position: fixed;
+        top: 40px;
+        width: 100%;
+        z-index: 10;
+        border-bottom: 1px #ccc solid;
+    }
+
+    .tab a {
+        width: 33.333333%;
+        background: #fff;
+        text-align: center;
+    }
+
+    .tab .active {
+        border-bottom: 1px #f50 solid;
+        color: #f50;
+    }
+
+    .panel {
+        margin: 0;
+    }
+
+    .refreshtip {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        margin: 10px 0;
+        text-align: center;
+        color: #999;
+    }
+
+    .swiper-container {
+        overflow: visible;
+    }
+
+    .loadtip {
+        display: block;
+        width: 100%;
+        line-height: 40px;
+        height: 40px;
+        text-align: center;
+        color: #999;
+        border-top: 1px solid #ddd;
+    }
+
+    .swiper-container,
+    .w {
+        height: calc(100vh - 120px);
+    }
+
+    .swiper-slide {
+        height: auto;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .list-group {
+        padding-left: 0;
+        margin-bottom: 20px;
+    }
+
+    .list-group-item {
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+        margin-bottom: -1px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+    }
+
+    .list-group-item:first-child {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+    }
+    </style>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/swiper/js/swiper.min.js"></script>
+</head>
+
+<body>
+    <!-- Slider main container -->
+    <div class="swiper-container">
+        <div class="refreshtip" style="">下拉可以刷新</div>
+        <div class="init-loading list-group-item text-center" style="display: none;">下拉刷新...</div>
+        <div class="swiper-wrapper w">
+            <div class="swiper-slide list-group">
+                <div class="list-group-item">List </div>
+                <div class="list-group-item">List </div>
+                <div class="list-group-item">List </div>
+                <div class="list-group-item">List </div>
+                <div class="list-group-item">List </div>
+                <div class="list-group-item">List </div>
+            </div>
+        </div>
+        <div class="loadtip" style="">上拉加载更多...</div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+</body>
+<script type="text/javascript" charset="utf-8">
+window.onload = function() {
+    var oi = 0,loadFlag = true;
+    //initialize swiper when document ready
+    mySwiper = new Swiper('.swiper-container', {
+        direction: 'vertical',
+        slidesPerView: 'auto',
+        mousewheel: true,
+        freeMode: true,
+        on: {
+            reachEnd:function(swiper) { 
+                console.log('reachEnd----');
+                setTimeout(function() {
+                    for (var i = 0; i < 5; i++) {
+                        oi++;
+                        $(".list-group").append('<li class="list-group-item">我是加载出来的' + oi + '...</li>');
+                        // $(".list-group").eq(mySwiper2.activeIndex).append('<div class="list-group-item">我是加载出来的' + oi + '...</div>');
+                    }
+                    $(".loadtip").html('上拉加载更多...');
+                    mySwiper.update(); // 重新计算高度;
+                }, 10);
+            },
+            touchMove: function(swiper) { //手动滑动中触发
+                // var _viewHeight = document.getElementsByClassName('swiper-wrapper')[0].offsetHeight;
+                // var _contentHeight = document.getElementsByClassName('swiper-slide')[0].offsetHeight;
+
+                // console.log(mySwiper.translate);
+                // if (mySwiper.translate < 50 && mySwiper.translate > 0) {
+                //     $(".init-loading").html('下拉刷新...').show();
+                // } else if (mySwiper.translate > 50) {
+                //     $(".init-loading").html('释放刷新...').show();
+                // }
+            },
+            touchEnd: function(swiper) {
+                var _viewHeight = document.getElementsByClassName('swiper-wrapper')[0].offsetHeight;
+                var _contentHeight = document.getElementsByClassName('swiper-slide')[0].offsetHeight;
+                // 上拉加载
+                if (mySwiper.translate <= _viewHeight - _contentHeight - 50 && mySwiper.translate < 0) {
+                    console.log("已经到达底部！");
+
+                    if (loadFlag) {
+                        $(".loadtip").html('正在加载...');
+                    } else {
+                        $(".loadtip").html('没有更多啦！');
+                    }
+                    setTimeout(function() {
+                        for (var i = 0; i < 5; i++) {
+                            oi++;
+                            $(".list-group").append('<li class="list-group-item">我是加载出来的' + oi + '...</li>');
+                            // $(".list-group").eq(mySwiper2.activeIndex).append('<div class="list-group-item">我是加载出来的' + oi + '...</div>');
+                        }
+                        $(".loadtip").html('上拉加载更多...');
+                        mySwiper.update(); // 重新计算高度;
+                    }, 800);
+                }
+                // // 下拉刷新
+                // if (mySwiper.translate >= 50) {
+                //     $(".init-loading").html('正在刷新...').show();
+                //     $(".loadtip").html('上拉加载更多');
+                //     loadFlag = true;
+
+                //     setTimeout(function() {
+                //         $(".refreshtip").show(0);
+                //         $(".init-loading").html('刷新成功！');
+                //         setTimeout(function() {
+                //             $(".init-loading").html('').hide();
+                //         }, 800);
+                //         $(".loadtip").show(0);
+
+                //         //刷新操作
+                //         mySwiper.update(); // 重新计算高度;
+                //     }, 1000);
+                // } else if (mySwiper.translate >= 0 && mySwiper.translate < 50) {
+                //     $(".init-loading").html('').hide();
+                // }
+                return false;
+            }
+        },
+    });
+}
+</script>
+
+</html>
