@@ -88,12 +88,15 @@ default-character-set = utf8mb4
 default-character-set = utf8mb4
 ```
 > Python2.7 > Python3.6
->> yum install python-devel mysql-devel openssl-devel gcc  
+>> yum install python-devel mysql-devel openssl-devel gcc gcc-c++ ncurses-devel ncurses-libs 
+>> ncurses-devel - uwsgitop监控需要   
 >> https://www.python.org/downloads/source/  
 >> wget  https://www.python.org/ftp/python/3.6.6/Python-3.6.6.tgz  
 >> tar xvf Python-3.6.6.tgz  
 >> 配置环境  
->>> 根据需要配置, pip安装插件时才会发现缺少什么,可能需要重新编译  
+>>> 根据需要配置, pip安装插件时才会发现缺少什么,可能需要重新编译安装  
+>>> 也可重新编辑, 将响应的.co文件copy到`/usr/local/lib/python3.6/lib-dynload/`  
+>>> `sudo cp build/lib.linux-x86_64-3.6/_curses* /usr/local/lib/python3.6/lib-dynload/`  
 >>
 >> ./configure ./configure --enable-optimizations  
 >> make && make install  
