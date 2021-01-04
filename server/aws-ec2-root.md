@@ -110,6 +110,13 @@ setParameter:
 security:
     authorization: enabled
 ```
+> 限制内存使用  
+```
+engine: wiredTiger
+  wiredTiger:
+    engineConfig:
+      cacheSizeGB: 4
+```
 
 #### 参考资料
 * [使用 SSH 连接到 Linux 实例](https://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html)
