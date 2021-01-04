@@ -98,7 +98,7 @@ default-character-set = utf8mb4
 >>> 也可重新编辑, 将响应的.co文件copy到`/usr/local/lib/python3.6/lib-dynload/`  
 >>> `sudo cp build/lib.linux-x86_64-3.6/_curses* /usr/local/lib/python3.6/lib-dynload/`  
 >>
->> ./configure ./configure --enable-optimizations  
+>> ./configure  ./configure --enable-optimizations  
 >> make && make install  
 >> mv /usr/bin/python /usr/bin/python2.7.5  
 >> ln -s /usr/local/bin/python3.6 /usr/bin/python  
@@ -110,8 +110,77 @@ default-character-set = utf8mb4
 >> ln -s /usr/local/bin/pip3.6 /usr/bin/pip  
 >>
 > pip install uwsgi  
+> pip install uwsgitop  
+
+#### Caddy配置系统服务
+> Save this systemd unit file as /etc/systemd/system/caddy.service   
+> Save this systemd unit file as /usr/lib/systemd/system/caddy.service   
 >
+```
+[Unit]
+Description=Caddy HTTP/2 web server
+Documentation=https://caddyserver.com/docs
+After=network-online.target
+Wants=network-online.target systemd-networkd-wait-online.service
+
+[Service]
+Restart=on-abnormal
+
+; User and group the process will run as.
+;User=www-data
+;Group=www-data
+User=root
+Group=root
+; Letsencrypt-issued certificates will be written to this directory.
+Environment=CADDYPATH=/etc/ssl/caddy
+
+; Always set "-root" to something safe in case it gets forgotten in the Caddyfile.
+;ExecStart=/usr/local/bin/caddy -log stdout -agree=true -conf=/etc/caddy/Caddyfile -root=/var/tmp
+ExecStart=/usr/local/bin/caddy -log stdout -agree=true -conf=/etc/caddy/Caddyfile -pidfile=/etc/caddy/caddy.pid
+;ExecStart=/usr/local/bin/caddy -log stdout -agree=true -conf=/etc/caddy/Caddyfile
+ExecReload=/bin/kill -USR1 $MAINPID
+
+; Use graceful shutdown with a reasonable timeout
+KillMode=mixed
+KillSignal=SIGQUIT
+TimeoutStopSec=5s
+
+; Limit the number of file descriptors; see `man systemd.exec` for more limit settings.
+LimitNOFILE=1048576
+; Unmodified caddy is not expected to use more than that.
+LimitNPROC=512
+
+; Use private /tmp and /var/tmp, which are discarded after caddy stops.
+PrivateTmp=true
+; Use a minimal /dev (May bring additional security if switched to 'true', but it may not work on Raspberry Pi's or other devices, so it has been disabled in this dist.)
+PrivateDevices=false
+; Hide /home, /root, and /run/user. Nobody will steal your SSH-keys.
+ProtectHome=true
+; Make /usr, /boot, /etc and possibly some more folders read-only.
+ProtectSystem=full
+; … except /etc/ssl/caddy, because we want Letsencrypt-certificates there.
+;   This merely retains r/w access rights, it does not add any new. Must still be writable on the host!
+ReadWriteDirectories=/etc/ssl/caddy
+
+; The following additional security directives only work with systemd v229 or later.
+; They further restrict privileges that can be gained by caddy. Uncomment if you like.
+; Note that you may have to add capabilities required by any plugins in use.
+;CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+;AmbientCapabilities=CAP_NET_BIND_SERVICE
+;NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
+```
+> 启动caddy
+> 
+```
+ systemctl daemon-reload
+ systemctl enable caddy
+ systemctl start 启动caddy
+```
 #### monit监控mongodb
+> https://mmonit.com/wiki/  
 > https://mmonit.com/wiki/Monit/Systemd  
 > https://mmonit.com/wiki/Monit/Installation  
 > yum install monit  
@@ -169,6 +238,33 @@ if 3 restarts within 3 cycles then unmonitor
  monit stop mongo # 停止mongo服务
  monit start all # 启动所有服务
  monit start mongo # 启动mongo服务
+```
+##### monit配置系统服务
+> Save this systemd unit file as /etc/systemd/system/monit.service   
+> Save this systemd unit file as /usr/lib/systemd/system/monit.service   
+>
+```
+ [Unit]
+ Description = Easy, proactive monitoring of Unix systems, network and cloud services
+ After = network.target
+ Documentation= https://mmonit.com/documentation/ 
+
+ [Service]
+ Type=simple
+ KillMode=process
+ ExecStart = /opt/mmonit/bin/mmonit -i
+ ExecStop = /opt/mmonit/bin/mmonit stop
+ PIDFile = /opt/mmonit/logs/mmonit.pid
+ Restart = on-abnormal
+
+ [Install]
+ WantedBy = multi-user.target
+```
+>
+```
+ systemctl daemon-reload
+ systemctl enable monit
+ systemctl start monit
 ```
 #### 修复系统盘
 > https://aws.amazon.com/premiumsupport/knowledge-center/ec2-sudoers-syntax-errors-sudo/  
