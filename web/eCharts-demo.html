@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Table Demo</title>
+
+	<style>
+		thead th{}
+		tbody tr:nth-child(2n){background-color:#ddd;color:#fff;}
+		tbody tr:nth-child(2n+1){background-color:#fefefe;color:#333;}
+		.bg-red-cl-white{background-color:red;color:#fff;}
+		.bg-yellow-cl-green{background-color:yellow;color:green;}
+		.echarts .pie{width:400px;height:400px;}
+	</style>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.min.js"></script>
+</head>
+<body>
+	<div class='table'>
+		<table>
+			<caption>table title </caption>
+			<thead>
+				<tr>
+					<th>header 1</th>
+					<th>header 2</th>
+					<th class="bg-red-cl-white">header 3</th>
+					<th class="bg-yellow-cl-green">header 4</th>
+					<th>header 5</th>
+					<th>header 6</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>data 1</td>
+					<td>data 2</td>
+					<td>data 3</td>
+					<td>data 4</td>
+					<td>data 5</td>
+					<td>data 6</td>
+				</tr>
+				<tr>
+					<td>data 1</td>
+					<td>data 2</td>
+					<td>data 3</td>
+					<td>data 4</td>
+					<td>data 5</td>
+					<td>data 6</td>
+				</tr>
+				<tr>
+					<td>data 1</td>
+					<td>data 2</td>
+					<td>data 3</td>
+					<td>data 4</td>
+					<td>data 5</td>
+					<td>data 6</td>
+				</tr>
+				<tr>
+					<td>data 1</td>
+					<td>data 2</td>
+					<td>data 3</td>
+					<td>data 4</td>
+					<td>data 5</td>
+					<td>data 6</td>
+				</tr>
+				<tr>
+					<td>data 1</td>
+					<td>data 2</td>
+					<td>data 3</td>
+					<td>data 4</td>
+					<td>data 5</td>
+					<td>data 6</td>
+				</tr>
+				<tr>
+					<td>data 1</td>
+					<td>data 2</td>
+					<td>data 3</td>
+					<td>data 4</td>
+					<td>data 5</td>
+					<td>data 6</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="echarts">
+		<div class="pie" id="main">
+			
+		</div>
+		<div class="pie">
+			
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+
+	var chartDom = document.getElementById('main');
+	var myChart = echarts.init(chartDom);
+	var option;
+
+	option = {
+	    title: {
+	        text: '某站点用户访问来源',
+	        subtext: '纯属虚构',
+	        left: 'center'
+	    },
+	    legend: {
+	        orient: 'vertical',
+	        left: 'left',
+	    },
+	    tooltip: {
+	        trigger: 'item',
+	        formatter: '{a} <br/>{b}: {c} ({d}%)'
+	    },
+	    series: [
+	        {
+	            name: '访问来源',
+	            type: 'pie',
+	            radius: '50%',
+	            label: {
+	                position: 'inner',
+	                fontSize: 12,
+	                formatter: '{b}\n{d}%',
+	            },
+	            labelLine: {
+	                show: false
+	            },
+
+	            data: [
+	                {value: 1048, name: '搜索引擎'},
+	                {value: 735, name: '直接访问'},
+	                {value: 580, name: '邮件营销'},
+	                {value: 484, name: '联盟广告'},
+	                {value: 300, name: '视频广告'}
+	            ],
+	            emphasis: {
+	                itemStyle: {
+	                    shadowBlur: 10,
+	                    shadowOffsetX: 0,
+	                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+	                }
+	            }
+	        }
+	    ]
+	};
+	myChart.setOption(option);
+	var foxyPatterns = {
+  "whitePatterns": [
+    {
+      "title": "Bannedbook",
+      "pattern": "*.bannedbook.org",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "Youtube",
+      "pattern": "*.youtube.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "facebook",
+      "pattern": "*.facebook.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "google",
+      "pattern": "*.google.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "fbcdn.net",
+      "pattern": "*.fbcdn.net",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "botanwang.com",
+      "pattern": "*.botanwang.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "googleapis.com",
+      "pattern": "*.googleapis.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "ytimg.com",
+      "pattern": "*.ytimg.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "ggpht.com",
+      "pattern": "*.ggpht.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "googleusercontent.com",
+      "pattern": "*.googleusercontent.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "pincong.rocks",
+      "pattern": "*.pincong.rocks",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "rfa.org",
+      "pattern": "*.rfa.org",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "twitter.com",
+      "pattern": "*.twitter.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "facebook.net",
+      "pattern": "*.facebook.net",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "soundofhope.org",
+      "pattern": "*.soundofhope.org",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "voanews.com",
+      "pattern": "*.voanews.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "rfi.fr",
+      "pattern": "*.rfi.fr",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "creaders.net",
+      "pattern": "*.creaders.net",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "iframe.ly",
+      "pattern": "*.iframe.ly",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "dw.com",
+      "pattern": "*.dw.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "wikipedia.org",
+      "pattern": "*.wikipedia.org",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "blogspot.com",
+      "pattern": "*.blogspot.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "instagram.com",
+      "pattern": "*.instagram.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "twimg.com",
+      "pattern": "*.twimg.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "worldjournal.com",
+      "pattern": "*.worldjournal.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "udn.com.tw",
+      "pattern": "*.udn.com.tw",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "udn.com",
+      "pattern": "*.udn.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "voachinese.com",
+      "pattern": "*.voachinese.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "chinadigitaltimes.net",
+      "pattern": "*.chinadigitaltimes.net",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "wp.com",
+      "pattern": "*.wp.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "youtu.be",
+      "pattern": "*.youtu.be",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "googletagmanager.com",
+      "pattern": "*.googletagmanager.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "gstatic.com",
+      "pattern": "*.gstatic.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "gab.com",
+      "pattern": "*.gab.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "cdninstagram.com",
+      "pattern": "*.cdninstagram.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "googlevideo.com",
+      "pattern": "*.googlevideo.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "t.co",
+      "pattern": "*.t.co",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "wenzhao.ca",
+      "pattern": "*.wenzhao.ca",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "vimeo.com",
+      "pattern": "*.vimeo.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "soundcloud.com",
+      "pattern": "*.soundcloud.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "sndcdn.com",
+      "pattern": "*.sndcdn.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "safechat.com",
+      "pattern": "*.safechat.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "six-degrees.io",
+      "pattern": "*.six-degrees.io",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "odysee.com",
+      "pattern": "*.odysee.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "cna.com.tw",
+      "pattern": "*.cna.com.tw",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "careerengine.us",
+      "pattern": "*.careerengine.us",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "parler.com",
+      "pattern": "*.parler.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "imgur.com",
+      "pattern": "*.imgur.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "ws.126.net",
+      "pattern": "*.ws.126.net",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "nytimes.com",
+      "pattern": "*.nytimes.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "nyt.com",
+      "pattern": "*.nyt.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "wenxuecity.com",
+      "pattern": "*.wenxuecity.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "reddit.com",
+      "pattern": "*.reddit.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "redditstatic.com",
+      "pattern": "*.redditstatic.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "archive.org",
+      "pattern": "*.archive.org",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "wsj.com",
+      "pattern": "*.wsj.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "nyti.ms",
+      "pattern": "*.nyti.ms",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "mingjingnews.com",
+      "pattern": "*.mingjingnews.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "telegra.ph",
+      "pattern": "*.telegra.ph",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "githubusercontent.com",
+      "pattern": "*.githubusercontent.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "redditmedia.com",
+      "pattern": "*.redditmedia.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "reuters.com",
+      "pattern": "*.reuters.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "appledaily.com",
+      "pattern": "*.appledaily.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "startpage.com",
+      "pattern": "*.startpage.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "bbc.com",
+      "pattern": "*.bbc.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "bbci.co.uk",
+      "pattern": "*.bbci.co.uk",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "lbry.com",
+      "pattern": "*.lbry.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "nypost.com",
+      "pattern": "*.nypost.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "appspot.com",
+      "pattern": "*.appspot.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "secretchina.com",
+      "pattern": "*.secretchina.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "youtube-nocookie.com",
+      "pattern": "*.youtube-nocookie.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "wiktionary.org",
+      "pattern": "*.wiktionary.org",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "rumble.com",
+      "pattern": "*.rumble.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "g.co",
+      "pattern": "*.g.co",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "android.com",
+      "pattern": "*.android.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "charlesproxy.com",
+      "pattern": "*.charlesproxy.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    },
+    {
+      "title": "aboluowang.com",
+      "pattern": "*.aboluowang.com",
+      "type": 1,
+      "protocols": 1,
+      "active": true
+    }
+  ],
+  "blackPatterns": []
+};
+var regstr = '';
+foxyPatterns.whitePatterns.forEach(function(val, idx){
+	console.log(val);
+	if(val.pattern) regstr += val.pattern.replace('*.', '').replace('.', '\\.') + '|';
+})
+</script>
+</html>
